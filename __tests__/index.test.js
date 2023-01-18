@@ -1,8 +1,7 @@
-import { readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import parser from '../bin/parser.js';
+import parser from '../src/parser.js';
 
 // вы можете получить доступ к мета-информации об этом модуле, используя объект import.meta
 const __filename = fileURLToPath(import.meta.url);
@@ -19,11 +18,11 @@ test('file json', () => {
 		const result = readFileSync(resultName, 'utf8');
 		expect(parser(filename1, filename2)).toBe(result);
 });
-//
-// test('file yml', () => {
-// 		const filename1 = getFixturePath('file1.yml');
-// 		const filename2 = getFixturePath('file2.yml');
-// 		const resultName = getFixturePath('file_result.txt');
-// 		const result = readFileSync(resultName, 'utf8');
-// 		expect(parser(filename1, filename2)).toBe(result);
-// });
+
+test('file yml', () => {
+		const filename1 = getFixturePath('file3.yml');
+		const filename2 = getFixturePath('file4.yml');
+		const resultName = getFixturePath('file_result.txt');
+		const result = readFileSync(resultName, 'utf8');
+		expect(parser(filename1, filename2)).toBe(result);
+});

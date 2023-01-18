@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { program } from 'commander';
-import parser from "./parser.js";
+import parser from "../src/parser.js";
 
 program
 		.description('Compares two configuration files and shows a difference.')
