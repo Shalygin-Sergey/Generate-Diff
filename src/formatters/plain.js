@@ -29,6 +29,7 @@ const formatPlain = (diff, path = []) => {
 		}
 		return formatPlain(item.value, newPath);
 	}).join('\n');
+
 	return output;
 };
 export default formatPlain;

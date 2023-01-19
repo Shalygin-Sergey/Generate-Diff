@@ -1,28 +1,25 @@
+import { readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import parser from '../src/index.js';
 
-import parser from '../src/parser.js';
+const __fileName = fileURLToPath(import.meta.url);
+const __dirName = path.dirname(__fileName);
 
-// вы можете получить доступ к мета-информации об этом модуле, используя объект import.meta
-const __filename = fileURLToPath(import.meta.url);
-// Метод path.dirname() возвращает имя каталога пути, подобно команде unix dirname.
-// Конечные разделители каталогов игнорируются
-const __dirname = path.dirname(__filename);
-// функция которая берет путь из фикстур
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const getFixturePath = (fileName) => path.join(__dirName, '..', '__fixtures__', fileName);
 
-test('file json', () => {
-		const filename1 = getFixturePath('file1.json');
-		const filename2 = getFixturePath('file2.json');
-		const resultName = getFixturePath('file_result.txt');
-		const result = readFileSync(resultName, 'utf8');
-		expect(parser(filename1, filename2)).toBe(result);
+test('check json file', () => {
+	const fileName1 = getFixturePath('file1.json');
+	const fileName2 = getFixturePath('file2.json');
+	const resultName = getFixturePath('file_result.txt');
+	const result = readFileSync(resultName, 'utf8');
+	expect(parser(fileName1, fileName2)).toBe(result);
 });
 
-test('file yml', () => {
-		const filename1 = getFixturePath('file3.yml');
-		const filename2 = getFixturePath('file4.yml');
-		const resultName = getFixturePath('file_result.txt');
-		const result = readFileSync(resultName, 'utf8');
-		expect(parser(filename1, filename2)).toBe(result);
+test('check yml file', () => {
+	const fileName1 = getFixturePath('file1.yml');
+	const fileName2 = getFixturePath('file2.yml');
+	const resultName = getFixturePath('file_result.txt');
+	const result = readFileSync(resultName, 'utf8');
+	expect(parser(fileName1, fileName2)).toBe(result);
 });
