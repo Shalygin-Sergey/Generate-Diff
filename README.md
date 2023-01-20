@@ -10,3 +10,5 @@
 gendiff -h проверка конфига
 [![asciicast](https://asciinema.org/a/PmgC3fSUf1PWkdWalWNQ9Golt.svg)](https://asciinema.org/a/PmgC3fSUf1PWkdWalWNQ9Golt)
 
+Проверка json файлов
+[![asciicast](https://asciinema.org/a/35p9LaHUZt5Ydf5NjASyAuv5h.svg)](https://asciinema.org/a/35p9LaHUZt5Ydf5NjASyAuv5h)
