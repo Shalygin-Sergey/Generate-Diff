@@ -8,4 +8,4 @@ lint:
 		npx eslint .
 
 test-coverage:
-		npx test --coverage --coverageProvider=v8
+		npx jest --bail --coverage --coverageProvider=v8
