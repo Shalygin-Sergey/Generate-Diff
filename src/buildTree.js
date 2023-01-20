@@ -18,6 +18,7 @@ const buildTree = (data1, data2) => {
     }
     return [key, { difference: 'unchanged', value: data1[key] }]; // ключ присутствовал и в первом и во втором объектах с одинаковыми значениями
   });
+  return _.fromPairs(result);
 };
 
 export default buildTree;
