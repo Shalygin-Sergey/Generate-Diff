@@ -1,36 +1,35 @@
 import _ from 'lodash';
 
-const padLine = (depth) => `  ${' '.repeat(4).repeat(depth - 1)}`;
-const padBracket = (depth) => `${' '.repeat(4).repeat(depth)}`;
-const getLine = (key, value, char, depth) => `${padLine(depth)}${char}${key}: ${value}`;
-const wrapBrackets = (body, depth) => `{\n${body}\n${padBracket(depth)}}`;
-
-const prepareValue = (value, depth) => {
-	if (!_.isObject(value)) {
-		return value;
-	}
-	const entries = Object.entries(value);
-	const items = entries.map(([key, val]) => getLine(key, prepareValue(val, depth + 1), '  ', depth + 1));
-	const body = items.join('\n');
-	return wrapBrackets(body, depth);
+const replacer = ' ';
+const spacesCount = 2;
+const stringify = (data, indent, handlerFunction, depth) => {
+  const [key, val] = data;
+  switch (val.difference) {
+    case 'changed':
+      return `${indent}- ${key}: ${handlerFunction(val.value1, depth + 2)
+      }\n${indent}+ ${key}: ${handlerFunction(val.value2, depth + 2)}`;
+    case 'added':
+      return `${indent}+ ${key}: ${handlerFunction(val.value, depth + 2)}`;
+    case 'deleted':
+      return `${indent}- ${key}: ${handlerFunction(val.value, depth + 2)}`;
+    default:
+      return `${indent}  ${key}: ${handlerFunction(val.value || val, depth + 2)}`;
+  }
 };
 
-const parseDiff = (diff, depth) => {
-	const items = diff.flatMap(({ key, value, state }) => {
-		const chars = { added: '+ ', removed: '- ', unchanged: '  ' };
-		if (state === 'updated') {
-			return [getLine(key, prepareValue(value.oldValue, depth + 1), chars.removed, depth + 1),
-				getLine(key, prepareValue(value.newValue, depth + 1), chars.added, depth + 1)];
-		}
-		if (state === 'complex') {
-			return getLine(key, parseDiff(value, depth + 1), '  ', depth + 1);
-		}
-		return getLine(key, prepareValue(value, depth + 1), chars[state], depth + 1);
-	});
-	const body = items.join('\n');
-	return wrapBrackets(body, depth);
+export default (value) => {
+  const iter = (currentValue, depth) => {
+    if (!_.isObject(currentValue)) return `${currentValue}`;
+
+    const indentSize = depth * spacesCount;
+    const currentIndent = replacer.repeat(indentSize);
+    const bracketIndent = replacer.repeat(indentSize - spacesCount);
+
+    const lines = Object
+      .entries(currentValue)
+      .map((data) => stringify(data, currentIndent, iter, depth));
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
+  };
+
+  return iter(value, 1);
 };
-
-const formatStylish = (diff) => parseDiff(diff, 0);
-
-export default formatStylish;
