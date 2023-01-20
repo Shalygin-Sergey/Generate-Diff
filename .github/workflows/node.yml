@@ -5,7 +5,7 @@ on:
   - pull_request
 
 env:
-  CI: true npm test
+  CI: true
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
           cache: 'npm'
       - run: make install
       - run: make lint
-      - run: make test
+      - run: test
       - name: code coverage
         uses: paambaati/codeclimate-action@v3.0.0
         env:

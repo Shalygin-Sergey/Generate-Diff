@@ -9,3 +9,6 @@ lint:
 
 test-coverage:
 		npm run coverage
+
+test:
+		npm jest
