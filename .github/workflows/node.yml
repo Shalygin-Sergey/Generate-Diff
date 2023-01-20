@@ -5,7 +5,7 @@ on:
   - pull_request
 
 env:
-  CI: true
+  CI: true npm test
 
 jobs:
   build:
