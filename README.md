@@ -31,7 +31,8 @@ config check
 gendiff -h
 [![asciicast](https://asciinema.org/a/PmgC3fSUf1PWkdWalWNQ9Golt.svg)](https://asciinema.org/a/PmgC3fSUf1PWkdWalWNQ9Golt)
 
-An example of running the difference calculator for files with nested structures (output in formats stylish, plain and json)
+An example of running the difference calculator for files with nested structures in JSON (output in formats stylish, plain and json)
+
 Plain
 [![asciicast](https://asciinema.org/a/TZW6hb0q2SJWx3kiPnctTdyw5.svg)](https://asciinema.org/a/TZW6hb0q2SJWx3kiPnctTdyw5)
 Json
@@ -39,5 +40,5 @@ Json
 Stylish
 [![asciicast](https://asciinema.org/a/EMHzJsosicnxHrYNtfKsKFdri.svg)](https://asciinema.org/a/EMHzJsosicnxHrYNtfKsKFdri)
 
-An example of running the difference calculator for files with nested structures (output in formats stylish, plain and json)
+An example of running the difference calculator for files with nested structures in YML (output in formats stylish, plain and json)
 [![asciicast](https://asciinema.org/a/52bZHgdVhRgISrNzb4qlGhpig.svg)](https://asciinema.org/a/52bZHgdVhRgISrNzb4qlGhpig)
