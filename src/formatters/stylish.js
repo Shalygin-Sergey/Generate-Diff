@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 const replacer = ' ';
 const doubleSpace = '  ';
-const spacesCount = 2;
+const spacesCount = 4;
 
 const indent = (depth) => replacer.repeat(depth * spacesCount).slice(0, -2);
 
