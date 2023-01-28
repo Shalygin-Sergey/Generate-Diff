@@ -7,20 +7,30 @@ const stringify = (value) => {
   return _.isString(value) ? `'${value}'` : value;
 };
 
-export default (diff) => {
-  const iter = (currentDiff, patch = '') => Object
-    .entries(currentDiff)
-    .flatMap(([key, val]) => {
-      if (val.difference === 'nested') {
-        return iter(val.value, `${patch}${key}.`);
+const iter = (tree, key = '') => {
+  const result = tree
+    .filter((node) => node.type !== 'unchanged')
+    .flatMap((node) => {
+      const keys = [...key, node.key];
+      const path = keys.join('.');
+      switch (node.type) {
+        case 'nested': {
+          return iter(node.value, keys);
+        }
+        case 'deleted': {
+          return `Property '${path}' was removed`;
+        }
+        case 'added': {
+          return `Property '${path}' was added with value: ${stringify(node.value)}`;
+        }
+        case 'changed': {
+          return `Property '${path}' was updated. From ${stringify(node.value1)} to ${stringify(node.value2)}`;
+        }
+        default:
+          throw new Error(`Error: ${node.key} - unknown node type`);
       }
-      if (val.difference === 'added') {
-        return `Property '${patch}${key}' was added with value: ${stringify(val.value)}`;
-      }
-      if (val.difference === 'deleted') {
-        return `Property '${patch}${key}' was removed`;
-      }
-      return (val.difference === 'changed') ? `Property '${patch}${key}' was updated. From ${stringify(val.value1)} to ${stringify(val.value2)}` : [];
-    }).join('\n');
-  return iter(diff);
+    });
+  return result;
 };
+
+export default (diff) => iter(diff).join('\n');

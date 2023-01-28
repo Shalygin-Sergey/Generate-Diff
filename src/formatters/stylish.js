@@ -1,35 +1,45 @@
 import _ from 'lodash';
 
 const replacer = ' ';
+const doubleSpace = '  ';
 const spacesCount = 2;
-const stringify = (data, indent, handlerFunction, depth) => {
-  const [key, val] = data;
-  switch (val.difference) {
-    case 'changed':
-      return `${indent}- ${key}: ${handlerFunction(val.value1, depth + 2)
-      }\n${indent}+ ${key}: ${handlerFunction(val.value2, depth + 2)}`;
-    case 'added':
-      return `${indent}+ ${key}: ${handlerFunction(val.value, depth + 2)}`;
-    case 'deleted':
-      return `${indent}- ${key}: ${handlerFunction(val.value, depth + 2)}`;
-    default:
-      return `${indent}  ${key}: ${handlerFunction(val.value || val, depth + 2)}`;
+
+const indent = (depth) => replacer.repeat(depth * spacesCount).slice(0, -2);
+
+const stringify = (value, depth) => {
+  if (!_.isPlainObject(value)) {
+    return String(value);
   }
+  const lines = Object
+    .entries(value)
+    .map(([key, val]) => `${indent(depth + 1)}  ${key}: ${stringify(val, (depth + 1))}`);
+  return `{\n${lines.join('\n')}\n${indent(depth)}${doubleSpace}}`;
 };
 
-export default (value) => {
-  const iter = (currentValue, depth) => {
-    if (!_.isObject(currentValue)) return `${currentValue}`;
-
-    const indentSize = depth * spacesCount;
-    const currentIndent = replacer.repeat(indentSize);
-    const bracketIndent = replacer.repeat(indentSize - spacesCount);
-
-    const lines = Object
-      .entries(currentValue)
-      .map((data) => stringify(data, currentIndent, iter, depth));
-    return ['{', ...lines, `${bracketIndent}}`].join('\n');
-  };
-
-  return iter(value, 1);
+const iter = (tree, depth = 1) => {
+  const result = tree
+    .flatMap((node) => {
+      switch (node.type) {
+        case 'nested': {
+          return `${indent(depth)}  ${node.key}: {\n${iter(node.value, depth + 1).join('\n')}\n${indent(depth)}${doubleSpace}}`;
+        }
+        case 'deleted': {
+          return `${indent(depth)}- ${node.key}: ${stringify(node.value, depth)}`;
+        }
+        case 'added': {
+          return `${indent(depth)}+ ${node.key}: ${stringify(node.value, depth)}`;
+        }
+        case 'changed': {
+          return `${indent(depth)}- ${node.key}: ${stringify(node.value1, depth)}\n${indent(depth)}+ ${node.key}: ${stringify(node.value2, depth)}`;
+        }
+        case 'unchanged': {
+          return `${indent(depth)}  ${node.key}: ${stringify(node.value, depth)}`;
+        }
+        default:
+          throw new Error(`Error: ${node.type} - this type doesn't exist in this file`);
+      }
+    });
+  return result;
 };
+
+export default (diff) => `{\n${iter(diff).join('\n')}\n}`;
