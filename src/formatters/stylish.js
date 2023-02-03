@@ -21,7 +21,7 @@ const iter = (tree, depth = 1) => {
     .flatMap((
       {
         type, key, value, value1, value2,
-      }
+      },
     ) => {
       switch (type) {
         case 'nested': {
