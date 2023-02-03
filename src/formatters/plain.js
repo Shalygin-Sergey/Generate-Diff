@@ -4,7 +4,7 @@ const stringify = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
-  return typeof value === 'string' ? `${value}` : String(value);
+  return typeof value === 'string' ? `'${value}'` : String(value);
 };
 
 const iter = (tree, key = '') => {

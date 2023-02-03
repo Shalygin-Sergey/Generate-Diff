@@ -27,5 +27,5 @@ test.each(extensions)('file extensions and format(%s, %s, %s)', (file1Extension,
   const fileBefore = getFixturePath(`file2.${file2Extension}`);
   const result = fs.readFileSync(getFixturePath(resultFile), 'utf8');
 
-  expect(genDiff(fileAfter, fileBefore, format)).toEqual(result);
+  expect(genDiff(fileAfter, fileBefore, format)).toBe(result);
 });
