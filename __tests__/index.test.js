@@ -22,4 +22,3 @@ describe('genDiff should work correctly', () => {
     expect(genDiff(filepath1, filepath2, 'json')).toEqual(readFixture('result-json.json'));
   });
 });
-
