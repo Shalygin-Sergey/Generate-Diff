@@ -18,7 +18,9 @@ const stringify = (value, depth) => {
 
 const iter = (tree, depth = 1) => {
   const result = tree
-    .flatMap(({type, key, value, value1, value2}) => {
+    .flatMap((
+      { type, key, value, value1, value2 }
+    ) => {
       switch (type) {
         case 'nested': {
           return `${getIndent(depth)}  ${key}: {\n${iter(value, depth + 1).join('\n')}\n${getIndent(depth)}${doubleSpace}}`;
