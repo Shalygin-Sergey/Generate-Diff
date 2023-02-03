@@ -1,7 +1,7 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 import parse from './parsers.js';
-import renderDiff from './formatters/index.js';
+import formatDiff from './formatters/index.js';
 import buildTree from './buildTree.js';
 
 const getTypeFile = (pathFile) => path.extname(pathFile).slice(1);
@@ -12,5 +12,5 @@ export default (pathFile1, pathFile2, formatName = 'stylish') => {
   const dataFile1 = getData(buildFullPath(pathFile1));
   const dataFile2 = getData(buildFullPath(pathFile2));
   const diff = buildTree(dataFile1, dataFile2);
-  return renderDiff(diff, formatName);
+  return formatDiff(diff, formatName);
 };
