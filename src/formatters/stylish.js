@@ -19,7 +19,9 @@ const stringify = (value, depth) => {
 const iter = (tree, depth = 1) => {
   const result = tree
     .flatMap((
-      { type, key, value, value1, value2 }
+      {
+        type, key, value, value1, value2,
+      }
     ) => {
       switch (type) {
         case 'nested': {
